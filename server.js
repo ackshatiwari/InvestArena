@@ -30,30 +30,32 @@ app.get('/login', (req, res) => {
 // Sign up endpoint
 app.post('/create-user', async (req, res) => {
     const { email, password, fullName } = req.body;
+    console.log(req.body);
     try {
-        const { user, error } = await supabase.auth.signUp(
-            { email, password },
-            { data: { full_name: fullName } }
-        );
-
+        //user sign up
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+        });
         if (error) {
             console.error('Error during sign up:', error);
             return res.status(400).json({ error: error.message });
         }
-        const { data, error: dbError } = await supabase
+        console.log('User signed up:', data);
+        
+        const { error: dbError } = await supabase
             .from('InvestArena_UserDetails')
-            .insert([{created_at: new Date(), full_name: fullName, email: email }]);
+            .insert([{ created_at: new Date().toISOString(), full_name: fullName, email: email, password: "null" }]);
         if (dbError) {
             console.error('Error inserting user details:', dbError);
             return res.status(500).json({ error: dbError.message });
         }
 
-
-        res.status(201).json({ user });
     } catch (error) {
         console.error('Error during sign up:', error);
         res.status(500).json({ error: 'An error occurred during sign up.' });
     }
+    res.status(200).json({ message: 'User created successfully' });
 });
 
 // Error handling middleware

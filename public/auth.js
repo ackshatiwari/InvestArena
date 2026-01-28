@@ -3,7 +3,7 @@ const signinBtn = document.getElementById('signin-btn');
 const signupBtn = document.getElementById('signup-btn');
 const signinDiv = document.getElementById('signin-div');
 const signupDiv = document.getElementById('signup-div');
-const signUpForm = document.getElementById('signup-form');
+const signUpForm = document.getElementById('signUpForm');
 const signInForm = document.getElementById('signin-form');
 const signinToSignup = document.getElementById('signin-to-signup');
 const signupToSignin = document.getElementById('signup-to-signin');
@@ -41,6 +41,8 @@ signUpForm.addEventListener('submit', async (e) => {
     const password = document.getElementById('signup-password').value;
     const confirmPassword = document.getElementById('signup-confirm').value;
     const fullName = document.getElementById('signup-name').value;
+
+    console.log("User details: ", fullName, email, password, confirmPassword);
     if (password !== confirmPassword) {
         alert('Passwords do not match!');
         return;
