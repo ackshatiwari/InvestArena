@@ -48,7 +48,7 @@ app.post('/create-user', async (req, res) => {
 
         const { error: dbError } = await supabase
             .from('InvestArena_UserDetails')
-            .insert([{ created_at: new Date().toISOString(), full_name: fullName, email: email, password: "null" }]);
+            .insert([{ created_at: new Date().toISOString(), full_name: fullName, email: email }]);
         if (dbError) {
             console.error('Error inserting user details:', dbError);
             return res.status(500).json({ error: dbError.message });

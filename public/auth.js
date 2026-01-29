@@ -1,3 +1,4 @@
+if(typeof window !== 'undefined') {
 // Get elements
 const signinBtn = document.getElementById('signin-btn');
 const signupBtn = document.getElementById('signup-btn');
@@ -13,12 +14,15 @@ const navLoginDiv = document.getElementById('nav-login');
 let isLoggedIn = false;
 isLoggedIn = sessionStorage.getItem('isLoggedIn');
 
-signinBtn.addEventListener('click', () => {
-    signinDiv.style.display = 'block';
-    signupDiv.style.display = 'none';
-    signinBtn.classList.add('active');
-    signupBtn.classList.remove('active');
-});
+if (signinBtn) {
+    signinBtn.addEventListener('click', () => {
+        signinDiv.style.display = 'block';
+        signupDiv.style.display = 'none';
+        signinBtn.classList.add('active');
+        signupBtn.classList.remove('active');
+    });
+}
+document.addEventListener('DOMContentLoaded', isUserLoggedIn());
 
 function isUserLoggedIn() {
     console.log("Is user logged in? ", isLoggedIn);
@@ -28,24 +32,31 @@ function isUserLoggedIn() {
     }
 }
 
+if (signupBtn) {
+    signupBtn.addEventListener('click', () => {
+        signinDiv.style.display = 'none';
+        signupDiv.style.display = 'block';
+        signinBtn.classList.remove('active');
+        signupBtn.classList.add('active');
+    });
+}
 
-signupBtn.addEventListener('click', () => {
-    signinDiv.style.display = 'none';
-    signupDiv.style.display = 'block';
-    signinBtn.classList.remove('active');
-    signupBtn.classList.add('active');
-});
 
 // Quick links between forms
-signinToSignup.addEventListener('click', (e) => {
-    e.preventDefault();
-    signupBtn.click();
-});
+if (signinToSignup) {
+    signinToSignup.addEventListener('click', (e) => {
+        e.preventDefault();
+        signupBtn.click();
+    });
+}
 
-signupToSignin.addEventListener('click', (e) => {
-    e.preventDefault();
-    signinBtn.click();
-});
+if (signupToSignin) {
+    signupToSignin.addEventListener('click', (e) => {
+        e.preventDefault();
+        signinBtn.click();
+    });
+}
+
 
 // Handle sign up form submission
 signUpForm.addEventListener('submit', async (e) => {
@@ -97,6 +108,7 @@ signInForm.addEventListener('submit', async (e) => {
             alert(`Error: ${data.error}`);
         } else {
             alert('Sign in successful!');
+            console.log(data);
 
         }
         if (data.message === 'Sign in successful') {
@@ -111,3 +123,4 @@ signInForm.addEventListener('submit', async (e) => {
         alert('An error occurred during sign in. Please try again later.', error);
     }
 });
+}
