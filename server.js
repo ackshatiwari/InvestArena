@@ -36,13 +36,16 @@ app.post('/create-user', async (req, res) => {
         const { data, error } = await supabase.auth.signUp({
             email: email,
             password: password,
+            options: {
+                emailRedirectTo: 'http://localhost:5555/auth/callback',
+            },
         });
         if (error) {
             console.error('Error during sign up:', error);
             return res.status(400).json({ error: error.message });
         }
         console.log('User signed up:', data);
-        
+
         const { error: dbError } = await supabase
             .from('InvestArena_UserDetails')
             .insert([{ created_at: new Date().toISOString(), full_name: fullName, email: email, password: "null" }]);
@@ -57,6 +60,41 @@ app.post('/create-user', async (req, res) => {
     }
     res.status(200).json({ message: 'User created successfully' });
 });
+
+app.get('/auth/callback', async (req, res) => {
+    const code = req.query.code;
+    if (code) {
+        const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+        if (error) {
+            console.error('Error exchanging code for session:', error);
+            return res.status(400).json({ error: error.message });
+        }
+        res.redirect('/');
+    }
+
+
+});
+
+// Log in endpoint
+app.post('/log-in-user', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
+        if (error) {
+            console.error('Error during sign in:', error);
+            return res.status(400).json({ error: error.message });
+        }
+        console.log('User signed in:', data);
+        res.status(200).json({ message: 'Sign in successful', redirectUrl: '/' });
+    } catch (error) {
+        console.error('Error during sign in:', error);
+        res.status(500).json({ error: 'An error occurred during sign in.' });
+    }
+});
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
