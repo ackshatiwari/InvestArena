@@ -92,7 +92,7 @@ if (typeof window !== 'undefined') {
             if (data.error) {
                 alert(`Error: ${data.error}`);
             } else {
-                alert('Sign up successful! Please check your email to confirm your account.');
+                alert('Sign up successful!');
                 signinBtn.click();
             }
         } catch (error) {
@@ -117,7 +117,6 @@ if (typeof window !== 'undefined') {
             if (data.error) {
                 alert(`Error: ${data.error}`);
             } else {
-                alert('Sign in successful!');
                 console.log(data);
 
             }
