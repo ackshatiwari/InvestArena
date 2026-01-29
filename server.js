@@ -27,6 +27,11 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
+});
+
+
 // Sign up endpoint
 app.post('/create-user', async (req, res) => {
     const { email, password, fullName } = req.body;
